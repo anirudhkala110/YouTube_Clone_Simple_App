@@ -256,7 +256,7 @@ const Watch = () => {
                     </div>
                 </div>
                 <div className='container1-side-player '>
-                    <div className='shadow' style={{ width: "18%" }}>
+                    <div className='shadow' style={{ width: "100%" }}>
                         {
                             repeater.map((i) => (
                                 <Link to={`/watch-video/${i}/${i}`} className='text-decoration-none text-dark'>
