@@ -281,7 +281,7 @@ const Watch = () => {
             .catch(err => console.log(err))
     }, [])
     // console.log(allComments)
-    console.log("response ->", commentArraySize)
+    // console.log("response ->", commentArraySize)
     return (
         <div className='w-100 watch-video-page'>
             <Navbar2 />
@@ -290,21 +290,29 @@ const Watch = () => {
                     <div className='playerWidth'>
                         <div className='d-flex justify-content-center mt-2'>
                             <div className='shadow mb-3' style={{ maxHeight: "800px" }}>
-                                <video
-                                    ref={videoRef}
-                                    src={`http://localhost:8090/Files/${post.file}`}
-                                    autoPlay={isPlaying}
-                                    muted={isMuted}
-                                    playbackRate={playbackRate}
-                                    onClick={togglePlayPause}
-                                    onEnded={handleVideoEnded}
-                                    onTimeUpdate={() => setCurrentTime(videoRef.current.currentTime)}
-                                    id='vdo-player'
-                                    volume={volume}
-                                    // className={isFullScreen ? 'hide-controls' : 'show-controls'}
-                                    controls={isFullScreen ? true : false}
-                                    controlsList='nodownload'
-                                />
+                                {
+                                    parseInt(post.vid) === parseInt(id) &&
+                                    <video
+                                        ref={videoRef}
+                                        src={`http://localhost:8090/Files/${post.file}`}
+                                        autoPlay={isPlaying}
+                                        muted={isMuted}
+                                        playbackRate={playbackRate}
+                                        onClick={togglePlayPause}
+                                        onEnded={handleVideoEnded}
+                                        onTimeUpdate={() => setCurrentTime(videoRef.current.currentTime)}
+                                        id='vdo-player'
+                                        volume={volume}
+                                        // className={isFullScreen ? 'hide-controls' : 'show-controls'}
+                                        controls={isFullScreen ? true : false}
+                                        controlsList='nodownload'
+                                    />
+                                }
+                                {
+                                    parseInt(post.vid) !== parseInt(id) && <div className='container my-5 py-5 d-flex justify-content-center align-items-center fs-2 fw-bold'>
+                                        This Video is Deleted by owner{post.vid} || {id}
+                                    </div>
+                                }
                                 <div>
                                     <div className='d-flex justify-content-between'>
                                         <div className='d-flex align--items-center'>
@@ -448,7 +456,7 @@ const Watch = () => {
                                                 </div> :
                                                 <>
                                                     {
-                                                        commentArraySize==0  &&  <div className='my-3' >No Comments yet. Be the first to comment on this video </div >
+                                                        commentArraySize == 0 && <div className='my-3' >No Comments yet. Be the first to comment on this video </div >
                                                     }
                                                 </>
 

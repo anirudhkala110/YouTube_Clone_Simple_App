@@ -22,7 +22,7 @@ const UploadVideo = () => {
     const username = user.username;
     const userId = user.userId;
     const profile = user.file
-    console.log(profile)
+    // console.log(profile)
     const [msg, setMsg] = useState('');
     const [msg_type, setMsg_type] = useState('');
 

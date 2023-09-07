@@ -11,6 +11,7 @@ import axios from 'axios';
 import UserData from './Authorization/UserData';
 import Navbar2 from './Utils/Navbar2';
 import UploadVideo from './Components/Pages/UploadVideo';
+import EditVideo from './Authorization/EditVideo';
 
 export const userContext = createContext()
 
@@ -34,6 +35,7 @@ function App() {
           <Route exact path='/login' element={<Login />} />
           <Route exact path='/register' element={<Register />} />
           <Route path="/watch-video/:id/:size" element={<Watch />} />
+          <Route path="/edit-video-data/:vid" element={<EditVideo />} />
           <Route exact path='/user-data' element={<UserData />} />
           <Route exact path='/upload-video' element={<UploadVideo />} />
         </Routes>

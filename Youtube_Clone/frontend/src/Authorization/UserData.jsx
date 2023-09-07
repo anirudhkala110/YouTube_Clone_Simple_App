@@ -14,7 +14,7 @@ const UserData = () => {
     useEffect(() => {
         axios.get('http://localhost:8090/all-videos')
             .then((posts) => {
-                console.log("Data -> ", posts.data)
+                // console.log("Data -> ", posts.data)
                 if (Array.isArray(posts.data)) {
                     // If it's an array, you can access its length
                     setSize(posts.data.length);
@@ -24,12 +24,12 @@ const UserData = () => {
             .catch((err) => console.log(err));
     });
     const handleLogout = (e) => {
-        alert("Logout")
         axios.get('http://localhost:8090/logout')
             .then(res => {
-                console.log()
                 if (res.data.msg_type === "good") {
+                    console.log('Logout')
                     navigate('/')
+                    // alert("Logout")
                     // window.location.href = '/'
                 }
 
@@ -57,6 +57,23 @@ const UserData = () => {
             return uploadDateObject.toLocaleDateString();
         }
     }
+    const [msg, setMsg] = useState()
+    const [msg_type, setMsg_type] = useState()
+    const handleDelete = (vid) => {
+        alert("Deleting data")
+        axios.delete(`http://localhost:8090/delete-video/` + vid)
+            .then(res => {
+                console.log("Deleted")
+                setMsg(res.data.msg)
+                setMsg_type(res.data.msg_type)
+                setTimeout(() => {
+                    setMsg(null)
+                }, 2000)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
 
     return (
         <div>
@@ -65,42 +82,47 @@ const UserData = () => {
                 user.email ?
                     <div className='d-flex justify-content-between'>
                         <div className='p-3 shadow'>
+                            {
+                                msg && <center className={`${msg_type === 'good' ? 'alert-success' : 'alert-danger'} alert`}  >{msg}</center>
+                            }
                             <center className='alert alert-success fs-3 fw-bolder shadow'>My Videos</center>
                             <div className=' user-data-info pb-5' style={{ width: '60vw', height: "85vh" }}>
                                 {post.map((post, i) => (
                                     <>
                                         {
-                                            user.email === post.email ? <div className='p-1' key={i}>
-                                                <Link to={`/watch-video/${post.vid}/${size}`} className=' text-decoration-none text-black' >
-                                                    <div className='mb-4 p-1 shadow d-flex border' key={i} >
-                                                        <video className='me-3' src={`http://localhost:8090/Files/${post.file}`} style={{ maxWidth: "300px" }} />
-                                                        <div className='d-flex'>
-                                                            {/* <i className='bi bi-person-circle fs-4'></i> */}
-                                                            {
-                                                                post.profile ? <img src={`http://localhost:8090/Files/${post.profile}`} style={{ width: "40px", height: "40px" }} className='profile-img rounded-5 me-1' /> : <i className='bi bi-person-circle fs-4 me-1'></i>
-                                                            }
-                                                            <div className='me-3 mb-1'>
-                                                                <div className='fw-bold  mb-0' style={{ fontSize: '20px' }}>
-                                                                    {post.title}
-                                                                </div>
-                                                                <div className='mb-0'>{post.username}</div>
-                                                                <div className='mb-0'>
-                                                                    75K views{' '}
-                                                                    <i
-                                                                        className='bi bi-dot'
-                                                                        style={{ fontSize: '20px' }}
-                                                                    ></i>{''}{getTimeAgo(post.updatedAt)}
-                                                                </div>
-                                                                <div className='mt-3'>
-                                                                    <button className='btn btn-success'>Edit</button>
-                                                                    <button className='btn btn-danger ms-5'>Delete</button>
+                                            user.email === post.email ?
+                                                <div className='p-1' key={i} style={{ maxHeight: "250px" }}>
+                                                    <Link to={`/watch-video/${post.vid}/${size}`} className=' text-decoration-none text-black' >
+                                                        <div className='p-1 shadow d-flex border' key={i} >
+                                                            <video className='me-3 img-thumbnail' src={`http://localhost:8090/Files/${post.file}`} style={{ maxWidth: "300px", height: "180px" }} />
+                                                            <div className='d-flex'>
+                                                                {/* <i className='bi bi-person-circle fs-4'></i> */}
+                                                                {
+                                                                    post.profile ? <img src={`http://localhost:8090/Files/${post.profile}`} style={{ width: "40px", height: "40px" }} className='profile-img rounded-5 me-1' /> : <i className='bi bi-person-circle fs-4 me-1'></i>
+                                                                }
+                                                                <div className='me-3 mb-1'>
+                                                                    <div className='fw-bold  mb-0' style={{ fontSize: '20px' }}>
+                                                                        {post.title}
+                                                                    </div>
+                                                                    <div className='mb-0'>{post.username}</div>
+                                                                    <div className='mb-0'>
+                                                                        75K views{' '}
+                                                                        <i
+                                                                            className='bi bi-dot'
+                                                                            style={{ fontSize: '20px' }}
+                                                                        ></i>{''}{getTimeAgo(post.updatedAt)}
+                                                                    </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
+                                                    </Link>
+                                                    <div className='mb-3 pe-4 w-100 d-flex justify-content-end' style={{ marginTop: "-45px" }}>
+                                                        <Link to={`/edit-video-data/${post.vid}`} className='text-decoration-none'>
+                                                            <button className='btn btn-outline-success shadow'><i class="bi me-3 bi-pencil-square"></i>Edit</button>
+                                                        </Link>
+                                                        <button className='btn btn-outline-danger ms-3 shadow' onClick={e => handleDelete(post.vid)}><i class="bi bi-trash me-2"></i>Delete</button>
                                                     </div>
-                                                </Link>
-                                            </div> : <></>
+                                                </div> : <></>
                                         }
                                     </>
                                 ))}
@@ -112,11 +134,12 @@ const UserData = () => {
                                 <div className='w-100 d-flex justify-content-center'><img src={`http://localhost:8090/FIles/${user.file}`} style={{}} className='user-profile-img img-thumbnail' /></div>
                                 <div className='fs-4 fw-bold'>Name : {user.username}</div>
                                 <div className='fs-4 fw-bold'>Email : {user.email}</div>
-                            </div>
-                            <div className='mt-3'>
-                                <button className='btn btn-success'>Edit</button>
-                                {/* <button className='btn btn-danger ms-5'>Delete</button> */}
-                                <button className='btn btn-danger ms-5' onClick={e => handleLogout(e)}>Logout</button>
+                                <div className='w-100 d-flex justify-content-end' style={{ marginTop: "5px", zIndex: "50 !important" }}>
+
+                                    <button className='btn btn-outline-success shadow'><i class="bi me-3 bi-pencil-square"></i>Edit</button>
+                                    {/* <button className='btn btn-danger ms-5'>Delete</button> */}
+                                    <button className='btn btn-outline-danger ms-5' onClick={e => handleLogout(e)}><i class="bi bi-box-arrow-right me-3"></i>Logout</button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -316,7 +316,5 @@ width: 100%;
 
 
 .user-profile-img{
-  /* max-width: 350px !important; */
   max-height: 350px !important;
-  width: 100% !important;
 }
