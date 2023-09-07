@@ -278,11 +278,43 @@ app.get('/all-comments', function (req, res) {
 
 app.get('/logout', (req, res) => {
     res.clearCookie('token')
-    console("Called")
+    console.log("Called")
     return res.json({ msg: "Logout Successful . . .", msg_type: "good" })
 })
 
 /* Logout System */
+
+/* Update Video Details */
+
+app.put('/edit-video/:vid', (req, res) => {
+    const vid = req.params.vid
+    VideoUpload.update({ title: req.body.title, description: req.body.description }, { where: { vid: vid } })
+        .then(result => {
+            console.log(result)
+            return res.json({ msg: "Update Successful . . .", msg_type: "good" })
+        })
+        .catch(err => console.log(err))
+})
+
+
+/* Update Video Details */
+
+
+
+/* Deleting Video */
+
+app.delete('/delete-video/:vid', (req, res) => {
+    VideoUpload.destroy({ where: { vid: req.params.vid } })
+        .then(result => {
+            return res.json({ msg: "Deleted Successfuly . . . ", msg_type: "good" })
+        })
+        .catch(err => {
+            console.log(err)
+            return res.json({ msg: "Can not Delete the video ", msg_type: 'error' })
+        })
+})
+
+/* Deleting Video */
 
 app.listen(port, () => {
     console.log(`Server started at ${port}`);
