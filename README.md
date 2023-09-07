@@ -1,5 +1,12 @@
 # YouTube_Clone_Simple_App
 
+Used ReactJS,NodeJS,Sequilize, and MySQL
+
+1- npm install (in both frontend and backend folder)
+2- npm start [for frontend]
+3+ nodemon [for backend]
+also provide a .env file to read the MySQL DataBase 
+
 This is the project on which Abhay Kumar is working as Frontend Developer and Anirudh Kala working as Backend Developer.
 
 Basic Commands to upload and adding file on github
