@@ -45,7 +45,7 @@ const upload = multer({
 })
 
 app.use(cors({
-    origin: ['http://localhost:3022'], // Replace with your client's URL
+    origin: ['http://localhost:3022','https://mern-youtube-clone-app.onrender.com'], // Replace with your client's URL
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     credentials: true
 }));
