@@ -242,7 +242,7 @@ app.get('/read-post/:id', (req, res) => {
 
 /* Post Comments and Likes */
 
-app.post('/comment-likes', verifyUser, function (req, res) {
+app.post('/comment', verifyUser, function (req, res) {
     const like = req.body.liked
     const comment = req.body.comment
     const vid = req.body.videoId
@@ -262,6 +262,31 @@ app.post('/comment-likes', verifyUser, function (req, res) {
             return res.json({ msg: 'Error Occured . . . ', msg_type: "error" })
         })
 })
+
+app.post('/likes', verifyUser, function (req, res) {
+    const liked = req.body.liked;
+    const disliked = req.body.disliked;
+    const email = req.email;
+    console.log(liked, " ", disliked, " ", email)
+    // Update all records with the specified cmntUserEmail
+    LikeComment.update({ liked: liked, disliked: disliked }, { where: { cmntUserEmail: email } })
+        .then((result) => {
+            if (result[0] > 0) {
+                // At least one record was updated
+                console.log(`${result[0]} records updated for email: ${email}`);
+                // res.status(200).json({ message: 'Comments updated successfully' });
+            } else {
+                // No records were updated, user not found
+                console.log("user not found")
+                // res.status(404).json({ error: 'User not found' });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // res.status(500).json({ error: 'Internal Server Error' });
+        });
+});
+
 
 app.get('/all-comments', function (req, res) {
     LikeComment.findAll({

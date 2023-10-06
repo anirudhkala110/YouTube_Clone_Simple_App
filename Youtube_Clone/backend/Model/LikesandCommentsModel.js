@@ -76,6 +76,9 @@ const CommentModel = sequelize.define('commentModel', {
     },
     liked: {
         type: DataTypes.BOOLEAN
+    },
+    disliked: {
+        type: DataTypes.BOOLEAN
     }
 })
 
