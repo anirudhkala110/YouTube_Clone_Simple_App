@@ -76,7 +76,7 @@ const UserModel = sequelize.define('UserModel', {
         allowNull: true
     },
 })
-sequelize.sync({ force: false }) // This will create the table if it doesn't exist and if exists then delete the old one and then create
+sequelize.sync({ force: true }) // This will create the table if it doesn't exist and if exists then delete the old one and then create
     .then(() => {
         console.log('\nUser Tables synchronized\n');
     })
