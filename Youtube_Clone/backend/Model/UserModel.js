@@ -1,4 +1,4 @@
-// const mongoose = require('mongoose')
+import mongoose from ('mongoose')
 // Import required modules
 import express from 'express';
 import cors from 'cors';
