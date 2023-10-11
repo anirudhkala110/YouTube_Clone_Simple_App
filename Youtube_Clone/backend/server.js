@@ -12,6 +12,7 @@ import cors from 'cors';
 import { Op, where } from 'sequelize'
 import multer from 'multer'
 import path from 'path'
+import mongoose from 'mongoose'
 
 const app = express()
 app.use(express.json());
@@ -22,12 +23,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 dotenv.config();
 
 
-const db = mysql.createConnection({
-    database: process.env.DATABASE,
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASS
-})
+// const db = mysql.createConnection({
+//     database: process.env.DATABASE,
+//     host: process.env.DATABASE_HOST,
+//     user: process.env.DATABASE_USER,
+//     password: process.env.DATABASE_PASS
+// })
+const db = mongoose.connect('mongodb+srv://anirudhkala110:Akala@12345@atlascluster.4d6nup2.mongodb.net/yt_clone?retryWrites=true&w=majority')
 
 const port = process.env.PORT || 8090
 
